@@ -8,7 +8,8 @@
 #include "elf_reader/elf_reader.h"
 
 int main(int argc, char * argv[]) {
-
+	//hi there this is a comment
+	printf("new comment\n";
 	/*
 	 * This variable will store the maximum
 	 * number of instructions to run before
