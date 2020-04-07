@@ -81,8 +81,11 @@ int main(int argc, char * argv[]) {
 	/* ADD YOUR VARIABLES HERE */
 	/***************************/
 	uint8_t opcode;
-	unit8_t source_register;	
-	unit8_t target_register;
+	uint8_t source_register;	
+	uint8_t target_register;
+	uint8_t destination_register;
+	uint8_t shift_ammount;
+	uint8_t function_bits;
 	uint16_t target_register;
 	uint16_t immediate;
 	int i;
@@ -102,6 +105,20 @@ int main(int argc, char * argv[]) {
 		
 
 		opcode = (CurrentInsturction & 0xFC000000) >>20
+
+		source_register = (CurrentInsturction & 0x03E00000) >> 15
+
+		target_register = (CurrentInsturction & 0x001F0000) >> 10
+
+		destination_register = (CurrentInsturction & 0x0000F800) >> 5
+
+		shift_ammount = (CurrentInsturction &)
+		function_bits = (CurrentInsturction & )
+
+
+
+
+
 		printf("opcode: %u\n", opcode);
 
 		if(opcode == 8){
@@ -116,6 +133,9 @@ int main(int argc, char * argv[]) {
 		//0000 00xx xxxx xxxx xxxx xxxxx xxxx xxxx
 		//1111 1100 0000 0000 0000 00000 0000 0000
 		//F    C    0    0    0    0     0    0
+		//0    3    E (mask 0x03E00000)
+		//0    0    1	 F (mask 0x001F0000)
+		//0	   0    0    0    F    8     0    0 ( mask 0x0000F800)
 		//Mask; 0xFC000000
 
 	}   
