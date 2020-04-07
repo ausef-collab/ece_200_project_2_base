@@ -8,8 +8,10 @@
 #include "elf_reader/elf_reader.h"
 
 int main(int argc, char * argv[]) {
-	//hi there this is a comment
-	printf("new comment\n";
+	//hi there this is a  comment
+	//MAKE A CHANGE
+	printf("omar/n")
+	
 	/*
 	 * This variable will store the maximum
 	 * number of instructions to run before
@@ -123,7 +125,6 @@ int main(int argc, char * argv[]) {
 	CleanUp();
 
 	return 0;
-
 
 
 	//hello world this is just a few edits to make sure i know how to use github
