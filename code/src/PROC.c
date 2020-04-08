@@ -88,6 +88,7 @@ int main(int argc, char * argv[]) {
 	uint8_t function_bits;
 	uint16_t target_register;
 	uint16_t immediate;
+	uint32_t address;
 	int i;
 	for(i = 0; i < MaxInstructions; i++) {
 
@@ -104,16 +105,23 @@ int main(int argc, char * argv[]) {
 	        printf("currentInstruction: %08x\n", CurrentInstruction);
 		
 
-		opcode = (CurrentInsturction & 0xFC000000) >>20
+		opcode = (CurrentInsturction & 0xFC000000) >>26;
 
-		source_register = (CurrentInsturction & 0x03E00000) >> 15
+		source_register = (CurrentInsturction & 0x03E00000) >> 21;
 
-		target_register = (CurrentInsturction & 0x001F0000) >> 10
+		target_register = (CurrentInsturction & 0x001F0000) >> 16;
 
-		destination_register = (CurrentInsturction & 0x0000F800) >> 5
+		destination_register = (CurrentInsturction & 0x0000F800) >> 11;
 
-		shift_ammount = (CurrentInsturction &)
-		function_bits = (CurrentInsturction & )
+		shift_ammount = (CurrentInsturction & 0x000007C0) >> 6;
+
+		function_bits = (CurrentInsturction & 0x0000003F);
+
+		immediate = (CurrentInsturction & 0x0000FFFF);
+
+		address = (CurrentInsturction &0x03FFFFFF);
+
+
 
 
 
@@ -130,13 +138,20 @@ int main(int argc, char * argv[]) {
 			ProgramCounter = ProgramCounter +4;
 		}else if(opcode== ....){
 				
-		//0000 00xx xxxx xxxx xxxx xxxxx xxxx xxxx
+		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+		//0000 0011 1111 1111 1111 1111 1111 1111
+		//0x03FFFFFF 
+
+		//0000 0000 0000 0000 0000 0111 1100 0000 - shift_amount
+
 		//1111 1100 0000 0000 0000 00000 0000 0000
 		//F    C    0    0    0    0     0    0
 		//0    3    E (mask 0x03E00000)
 		//0    0    1	 F (mask 0x001F0000)
 		//0	   0    0    0    F    8     0    0 ( mask 0x0000F800)
 		//Mask; 0xFC000000
+		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+		//1111 0101 0000 1111 0000 1101 1010 00111
 
 	}   
 
@@ -145,6 +160,4 @@ int main(int argc, char * argv[]) {
 	CleanUp();
 
 	return 0;
-
-
-	//hello world this is just a few edits to make sure i know how to use github
+	//testing 
