@@ -116,9 +116,10 @@ int main(int argc, char * argv[]) {
 		}else{
 		source_register      =(CurrentInsturction & 0x03E00000) >> 21;
 		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
-		
 	    immediate            =(CurrentInsturction & 0x0000FFFF);
 		address              =(CurrentInsturction &0x03FFFFFF);
+		rsValue              =RegFile[source_register];
+        rtValue              =RegFile[target_register];
 			}
 
 
@@ -131,22 +132,22 @@ int main(int argc, char * argv[]) {
 		if(opcode == 0){
 			switch (function_bits){
 				case 32:{
-					RegFile[destination_register]= source_register + target_register;
+					RegFile[destination_register]= rsValue + rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 33;{
-					RegFile[destination_register]= source_register + target_register;
+					RegFile[destination_register]= rsValue + rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 34;{
-					RegFile[destination_register]= source_register - target_register;
+					RegFile[destination_register]= rsValue - rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 35;{
-					RegFile[destination_register]= source_register - target_register;
+					RegFile[destination_register]= rsValue - rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
