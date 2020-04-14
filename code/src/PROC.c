@@ -152,7 +152,14 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 				case 36;{
-					//lets 
+					RegFile[destination_register]= source_register & target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 38;{
+					RegFile[destination_register]= source_register ^ target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
 				}
 			}
 
