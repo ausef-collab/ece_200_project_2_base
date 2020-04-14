@@ -184,8 +184,10 @@ int main(int argc, char * argv[]) {
 						RegFile[destination_register]= false;
 						printf("%d\n",RegFile[destination_register]);
 					break;
-				}
-				case 45:
+        }
+
+				case 45
+
 				
 			}
 
