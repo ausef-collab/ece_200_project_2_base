@@ -123,10 +123,6 @@ int main(int argc, char * argv[]) {
 			}
 
 
-
-
-
-
 		printf("opcode: %u\n", opcode);
 
 		if(opcode == 0){
@@ -156,44 +152,29 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-<<<<<<< HEAD
-<<<<<<< HEAD
-				case 37;{ //OR 
-					RegFile[destination_register]= source_register | target_register;
-					printf("%d\n",RegFile[destination_register]);
-				}
-				case 38;{
-=======
-=======
->>>>>>> 9c7a545cac76bc6b5fa19339fd9f53b2394a17c8
 				case 37;{
 					RegFile[destination_register]= source_register | target_register;
 					printf("%d\n",RegFile[destination_register]);
+					break;
 				}
 				case 38;{//XOR
-<<<<<<< HEAD
->>>>>>> 9c7a545cac76bc6b5fa19339fd9f53b2394a17c8
-=======
->>>>>>> 9c7a545cac76bc6b5fa19339fd9f53b2394a17c8
 					RegFile[destination_register]= source_register ^ target_register;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-<<<<<<< HEAD
-<<<<<<< HEAD
 				case 39;{//NOR
 					RegFile[destination_register]= !(source_register | target_register);
 					printf("%d\n",RegFile[destination_register]);
-=======
-=======
->>>>>>> 9c7a545cac76bc6b5fa19339fd9f53b2394a17c8
+					break;
 				case 42;{//SLT
-					if(rsValue<rtValue)
+					if(rsValue<rtValue){
 						RegFile[destination_register]= true;
 						printf("%d\n",RegFile[destination_register]);
-					else
+					}
+					else{
 						RegFile[destination_register]= false;
 						printf("%d\n",RegFile[destination_register]);
+					}
 					break;
 				case 43;{//SLTU
 					if(rsValue<rtValue)
@@ -203,11 +184,6 @@ int main(int argc, char * argv[]) {
 						RegFile[destination_register]= false;
 						printf("%d\n",RegFile[destination_register]);
 					break;
-
-<<<<<<< HEAD
->>>>>>> 9c7a545cac76bc6b5fa19339fd9f53b2394a17c8
-=======
->>>>>>> 9c7a545cac76bc6b5fa19339fd9f53b2394a17c8
 				}
 				
 			}
