@@ -156,15 +156,34 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 38;{
-					RegFile[destination_register]= source_register ^ target_register;
-					printf("%d\n",RegFile[destination_register]);
-					break;
-				}
 				case 37;{
 					RegFile[destination_register]= source_register | target_register;
 					printf("%d\n",RegFile[destination_register]);
 				}
+				case 38;{//XOR
+					RegFile[destination_register]= source_register ^ target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 42;{//SLT
+					if(rsValue<rtValue)
+						RegFile[destination_register]= true;
+						printf("%d\n",RegFile[destination_register]);
+					else
+						RegFile[destination_register]= false;
+						printf("%d\n",RegFile[destination_register]);
+					break;
+				case 43;{//SLTU
+					if(rsValue<rtValue)
+						RegFile[destination_register]= true;
+						printf("%d\n",RegFile[destination_register]);
+					else
+						RegFile[destination_register]= false;
+						printf("%d\n",RegFile[destination_register]);
+					break;
+
+				}
+				
 			}
 
 			pintf("ADDIU\n");
