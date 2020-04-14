@@ -149,6 +149,9 @@ int main(int argc, char * argv[]) {
 				case 35;{
 					
 				}
+				case 36;{
+					
+				}
 			}
 
 			pintf("ADDIU\n");
