@@ -103,24 +103,23 @@ int main(int argc, char * argv[]) {
 		/********************************/
         
 	        printf("currentInstruction: %08x\n", CurrentInstruction);
-		
-
 		opcode = (CurrentInsturction & 0xFC000000) >>26;
 
-		source_register = (CurrentInsturction & 0x03E00000) >> 21;
-
-		target_register = (CurrentInsturction & 0x001F0000) >> 16;
-
-		destination_register = (CurrentInsturction & 0x0000F800) >> 11;
-
-		shift_ammount = (CurrentInsturction & 0x000007C0) >> 6;
-
-		function_bits = (CurrentInsturction & 0x0000003F);
-
-		immediate = (CurrentInsturction & 0x0000FFFF);
-
-		address = (CurrentInsturction &0x03FFFFFF);
-
+	   if(opcode == 0){
+		source_register      =(CurrentInsturction & 0x03E00000) >> 21;
+		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
+		destination_register =(CurrentInsturction & 0x0000F800) >> 11;
+		shift_ammount 		 =(CurrentInsturction & 0x000007C0) >> 6;
+		function_bits 		 =(CurrentInsturction & 0x0000003F);
+        rsValue              =RegFile[source_register];
+        rtValue              =RegFile[target_register];
+		}else{
+		source_register      =(CurrentInsturction & 0x03E00000) >> 21;
+		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
+		
+	    immediate            =(CurrentInsturction & 0x0000FFFF);
+		address              =(CurrentInsturction &0x03FFFFFF);
+			}
 
 
 
@@ -147,7 +146,9 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 				case 35;{
-					
+					RegFile[destination_register]= source_register - target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
 				}
 				case 36;{
 					
