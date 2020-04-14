@@ -129,8 +129,28 @@ int main(int argc, char * argv[]) {
 
 		printf("opcode: %u\n", opcode);
 
-		if(opcode == 8){
-			
+		if(opcode == 0){
+			switch (function_bits){
+				case 32:{
+					RegFile[destination_register]= source_register + target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 33;{
+					RegFile[destination_register]= source_register + target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 34;{
+					RegFile[destination_register]= source_register - target_register;
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 35;{
+					
+				}
+			}
+
 			pintf("ADDIU\n");
 			
 			RegFile[target_register] = RegFile[source_register] + ......
