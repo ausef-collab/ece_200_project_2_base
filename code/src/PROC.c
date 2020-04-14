@@ -185,6 +185,7 @@ int main(int argc, char * argv[]) {
 						printf("%d\n",RegFile[destination_register]);
 					break;
 				}
+				case 45
 				
 			}
 
