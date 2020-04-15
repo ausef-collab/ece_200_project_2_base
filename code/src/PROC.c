@@ -184,9 +184,53 @@ int main(int argc, char * argv[]) {
 						RegFile[destination_register]= false;
 						printf("%d\n",RegFile[destination_register]);
 					break;
-       				}
+				case 16;{//MFHI
+					RegFile[destination_register]=RegFile[32];
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 17;{//MTHI
+					RegFile[32]=rsValue;
+					printf("%d\n",RegFile[32]);
+					break;
+				}
+				case 18;{//MFLO
+					RegFile[destination_register]=RegFile[33];
+					printf("%d\n",RegFile[destination_register]);
+					break;
+				}
+				case 19;{//MTLO
+					RegFile[33]=rsValue;
+					printf("%d\n",RegFile[33]);
+					break;
+				}
+				case 24;{//MULT
+					RegFile[33]=rsValue*rtValue
+					printf("%d\n",RegFile[33]);
+					break;
+				}
+				case 25;{//MULTU
+					RegFile[33]=rsValue*rtValue
+					printf("%d\n",RegFile[33]);
+					break;				}
+				case 26;{//DIV
+					RegFile[32]=rsValue%rtValue
+					RegFile[33]=rsValue*rtValue
+					printf("%d\n",RegFile[33]);
+					printf("%d\n",RegFile[33]);
+					break;
+				}
+				case 27;{//DIVU
+					RegFile[32]=rsValue%rtValue
+					RegFile[33]=rsValue*rtValue
+					printf("%d\n",RegFile[33]);
+					printf("%d\n",RegFile[33]);
+					break;
+				}
 
-				
+
+
+
 			}
 
 			pintf("ADDIU\n");
