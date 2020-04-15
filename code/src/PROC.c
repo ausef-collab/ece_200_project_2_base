@@ -88,10 +88,20 @@ int main(int argc, char * argv[]) {
 	uint8_t function_bits;
 	uint16_t target_register;
 	uint16_t immediate;
+	int16_t singed_immediate;
 	uint32_t address;
+	int16_t singed_address;
+	int32_t rsValue;
+	uint32_t unsigned_rsValue;
+	int32_t rtValue;
+	uint32_t unsigned_rtValue;
+	int8_t bflag;	
+	uint32_t DelayCounter;
+	DelayCounter =ProgramCounter; //Should this be in the loop or outside the loop.
+
 	int i;
 	for(i = 0; i < MaxInstructions; i++) {
-
+		bflag=0; //set falg to zero 
 		//FETCH THE INSTRUCTION AT 'ProgramCounter'		
 		CurrentInstruction = readWord(ProgramCounter,false);
 
@@ -117,7 +127,7 @@ int main(int argc, char * argv[]) {
 		source_register      =(CurrentInsturction & 0x03E00000) >> 21;
 		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
 	    immediate            =(CurrentInsturction & 0x0000FFFF);
-		address              =(CurrentInsturction &0x03FFFFFF);
+		address              =(CurrentInsturction & 0x03FFFFFF);
 		rsValue              =RegFile[source_register];
         rtValue              =RegFile[target_register];
 			}
@@ -127,13 +137,17 @@ int main(int argc, char * argv[]) {
 
 		if(opcode == 0){
 			switch (function_bits){
+
 				case 32:{
+
 					RegFile[destination_register]= rsValue + rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 33;{
-					RegFile[destination_register]= rsValue + rtValue;
+				case 33;{//addu
+					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
+					unsigned_rsValue =(uint32_t)rsValue;
+					RegFile[destination_register]= unsigned_rsValue + unsigned_rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
@@ -142,28 +156,34 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 35;{
-					RegFile[destination_register]= rsValue - rtValue;
+				case 35;{//subu
+					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
+					unsigned_rsValue =(uint32_t)rsValue;
+					RegFile[destination_register]= unsigned_rsValue - unsigned_rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 36;{
-					RegFile[destination_register]= source_register & target_register;
+					//when ever adding two different length varaibles cast immdiate or other to make it 32_bits 
+					//also create the signed varibles before in the global varibles to cast later on.
+					//int16_t z;
+					//z=(int16_t)immediate;
+					RegFile[destination_register]= rsValue & rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 37;{
-					RegFile[destination_register]= source_register | target_register;
+					RegFile[destination_register]= rsValue | rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 38;{//XOR
-					RegFile[destination_register]= source_register ^ target_register;
+					RegFile[destination_register]= rsValue ^ rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
 				case 39;{//NOR
-					RegFile[destination_register]= !(source_register | target_register);
+					RegFile[destination_register]= !(rsValue | rtValue);
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				case 42;{//SLT
@@ -177,13 +197,35 @@ int main(int argc, char * argv[]) {
 					}
 					break;
 				case 43;{//SLTU
-					if(rsValue<rtValue)
+					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
+					unsigned_rsValue =(uint32_t)rsValue;
+					if(unsigned_rsValue<unsigned_rtValue)
 						RegFile[destination_register]= true;
 						printf("%d\n",RegFile[destination_register]);
 					else
 						RegFile[destination_register]= false;
 						printf("%d\n",RegFile[destination_register]);
 					break;
+				}
+				case 0{//SLL
+					if(destination_register==0){
+						break;
+					}
+					RegFile[destination_register]= rtValue <<shift_ammount;
+					printf("5d\n", RegFile[destination_register]);
+					break;
+					//q1) Do we do this operation unsigned or signed since we might change the MSB?
+					//q2) Do we take the bit represnation of the rt register and shift it by shift_amount bits
+				}
+				case 2{//SRL
+					if(destination_register==0){
+						break;
+					}
+					unsigned_rtValue =(uint32_t)rtValue;
+					RegFile[destination_register]= unsigned_rtValue >> shift_ammount;
+					printf("5d\n", RegFile[destination_register]);
+					break;
+				}
 				case 16;{//MFHI
 					RegFile[destination_register]=RegFile[32];
 					printf("%d\n",RegFile[destination_register]);
@@ -205,26 +247,50 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 				case 24;{//MULT
-					RegFile[33]=rsValue*rtValue
+					int64_t result = rsValue*rtValue;
+					RegFile[32]= result >>32;
+					RegFile[33]=(int32_t)result;
+					printf("%d\n",RegFile[32]);
 					printf("%d\n",RegFile[33]);
 					break;
 				}
 				case 25;{//MULTU
-					RegFile[33]=rsValue*rtValue
+					int64_t result = unsigned_rsValue*unsigned_rtValue;
+					RegFile[32]= result >>32;
+					RegFile[33]=(int32_t)result;
+					printf("%d\n",RegFile[32]);
 					printf("%d\n",RegFile[33]);
-					break;				}
+					break;				
+				}
 				case 26;{//DIV
 					RegFile[32]=rsValue%rtValue
-					RegFile[33]=rsValue*rtValue
-					printf("%d\n",RegFile[33]);
+					RegFile[33]=rsValue/rtValue
+					printf("%d\n",RegFile[32]);
 					printf("%d\n",RegFile[33]);
 					break;
 				}
 				case 27;{//DIVU
-					RegFile[32]=rsValue%rtValue
-					RegFile[33]=rsValue*rtValue
+					RegFile[32]=unsigned_rsValue%unsigned_rtValue;
+					RegFile[33]=unsigned_rsValue/unsigned_rtValue;
+					printf("%d\n",RegFile[32]);
 					printf("%d\n",RegFile[33]);
-					printf("%d\n",RegFile[33]);
+					break;
+				}
+				case 8;{
+					//JR
+					bflag =1;
+					DelayCounter = rsValue;//DelayCounter is the PC that the Jumb reigster goes to.
+					break;
+				}
+				case 9;{
+					//JALR
+					bflag =1;
+					 //Place the return address link in GPR rd
+					RegFile[destination_register] = ProgramCounter +8;
+					//ProgramCounter = RegFile[destination_register];
+					DelayCounter = RegFile[source_register];
+					//quesstion about this for TA. Does this work? Should we set rd to PC?
+					//how does the code know to come back to addres at rd after excuting instruction @rs?
 					break;
 				}
 
