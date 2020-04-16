@@ -301,11 +301,15 @@ int main(int argc, char * argv[]) {
 
 			pintf("ADDIU\n");
 			
-			RegFile[target_register] = RegFile[source_register] + ......
+		}else if(opcode==8){//ADDI
+			int32_t cas_immediate =(int32_t)immediate  ; 
+			RegFile[target_register]= rsValue + cas_immediate;
+			printf("%d\n",RegFile[target_register]);
+		}
+		}else if(opcode==9){
+			unsigned_rsValue =(uint32_t)rsValue;
 
-			ProgramCounter = ProgramCounter +4;
-		}else if(opcode== ....){
-				
+		}		
 		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 		//0000 0011 1111 1111 1111 1111 1111 1111
 		//0x03FFFFFF 
@@ -320,6 +324,7 @@ int main(int argc, char * argv[]) {
 		//Mask; 0xFC000000
 		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 		//1111 0101 0000 1111 0000 1101 1010 00111
+			}
 
 	}   
 
