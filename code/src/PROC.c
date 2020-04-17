@@ -299,29 +299,17 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 
-			}
+			}else if(opcode==8){//ADDI
+			int32_t cas_immediate =(int32_t)immediate  ; 
+			RegFile[target_register]= rsValue + cas_immediate;
+			printf("%d\n",RegFile[target_register]);
 
-			
-		}else if(opcode== ){
+			}else if(opcode==9){
+			unsigned_rsValue =(uint32_t)rsValue;
+
+			}		
+
 		}
-		else if(){
-			
-		}
-				
-		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
-		//0000 0011 1111 1111 1111 1111 1111 1111
-		//0x03FFFFFF 
-
-		//0000 0000 0000 0000 0000 0111 1100 0000 - shift_amount
-
-		//1111 1100 0000 0000 0000 00000 0000 0000
-		//F    C    0    0    0    0     0    0
-		//0    3    E (mask 0x03E00000)
-		//0    0    1	 F (mask 0x001F0000)
-		//0	   0    0    0    F    8     0    0 ( mask 0x0000F800)
-		//Mask; 0xFC000000
-		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
-		//1111 0101 0000 1111 0000 1101 1010 00111
 
 	}   
 
