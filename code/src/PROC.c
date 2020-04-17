@@ -353,6 +353,18 @@ int main(int argc, char * argv[]) {
 			else if (opcode==15){//LUI
 			int32_t cas_immediate =(int32_t)immediate;
 			RegFile[target_register]=  cas_immediate <<16;
+			}else if (opcode==1){
+				switch(rtValue){
+					case 0:
+					if(rsValue<0){
+						bflag=1;
+
+					}else{
+						bflag=0
+						break;
+					}
+
+				}
 			}
 
 		}
