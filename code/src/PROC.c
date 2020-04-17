@@ -1,4 +1,4 @@
-#include <stdio.h>	/* fprintf(), printf() */
+#include <stdio.h>	/* fprintf(), printf() *
 #include <stdlib.h>	/* atoi() */
 #include <stdint.h>	/* uint32_t */
 
@@ -97,10 +97,11 @@ int main(int argc, char * argv[]) {
 	uint32_t unsigned_rtValue;
 	int8_t bflag;	
 	uint32_t DelayCounter;
-	DelayCounter =ProgramCounter; //Should this be in the loop or outside the loop.
+	
 
 	int i;
 	for(i = 0; i < MaxInstructions; i++) {
+		DelayCounter =ProgramCounter; //Should this be in the loop or outside the loop.
 		bflag=0; //set falg to zero 
 		//FETCH THE INSTRUCTION AT 'ProgramCounter'		
 		CurrentInstruction = readWord(ProgramCounter,false);
@@ -112,7 +113,7 @@ int main(int argc, char * argv[]) {
 		/* ADD YOUR IMPLEMENTATION HERE */
 		/********************************/
         
-	        printf("currentInstruction: %08x\n", CurrentInstruction);
+	    printf("currentInstruction: %08x\n", CurrentInstruction);
 		opcode = (CurrentInsturction & 0xFC000000) >>26;
 
 	   if(opcode == 0){
@@ -255,6 +256,8 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 				case 25;{//MULTU
+					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
+					unsigned_rsValue =(uint32_t)rsValue;
 					int64_t result = unsigned_rsValue*unsigned_rtValue;
 					RegFile[32]= result >>32;
 					RegFile[33]=(int32_t)result;
@@ -270,6 +273,8 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 				case 27;{//DIVU
+					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
+					unsigned_rsValue =(uint32_t)rsValue;
 					RegFile[32]=unsigned_rsValue%unsigned_rtValue;
 					RegFile[33]=unsigned_rsValue/unsigned_rtValue;
 					printf("%d\n",RegFile[32]);
@@ -294,17 +299,14 @@ int main(int argc, char * argv[]) {
 					break;
 				}
 
-
-
-
 			}
 
-			pintf("ADDIU\n");
 			
-			RegFile[target_register] = RegFile[source_register] + ......
-
-			ProgramCounter = ProgramCounter +4;
-		}else if(opcode== ....){
+		}else if(opcode== ){
+		}
+		else if(){
+			
+		}
 				
 		//xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
 		//0000 0011 1111 1111 1111 1111 1111 1111
