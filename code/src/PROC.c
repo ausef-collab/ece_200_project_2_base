@@ -81,14 +81,13 @@ int main(int argc, char * argv[]) {
 	/* ADD YOUR VARIABLES HERE */
 	/***************************/
 	uint8_t opcode;
-	uint8_t source_register;	
+	uint8_t source_register;//should we use int instead of uint	
 	uint8_t target_register;
 	uint8_t destination_register;
 	uint8_t shift_ammount;
 	uint8_t function_bits;
-	uint16_t target_register;
-	uint16_t immediate;
-	int16_t singed_immediate;
+	int16_t immediate;
+	uint16_t unsinged_immediate;
 	uint32_t address;
 	int16_t singed_address;
 	int32_t rsValue;
@@ -127,7 +126,8 @@ int main(int argc, char * argv[]) {
 		}else{
 		source_register      =(CurrentInsturction & 0x03E00000) >> 21;
 		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
-	    immediate            =(CurrentInsturction & 0x0000FFFF);
+	    immediate            =(CurrentInsturction & 0x0000FFFF);//unsigned immidiate 
+	    unsinged_immediate   =(CurrentInsturction & 0x0000FFFF);
 		address              =(CurrentInsturction & 0x03FFFFFF);
 		rsValue              =RegFile[source_register];
         rtValue              =RegFile[target_register];
@@ -139,8 +139,7 @@ int main(int argc, char * argv[]) {
 		if(opcode == 0){
 			switch (function_bits){
 
-				case 32:{
-
+				case 32:{//ADD
 					RegFile[destination_register]= rsValue + rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
@@ -152,7 +151,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 34;{
+				case 34;{//SUB
 					RegFile[destination_register]= rsValue - rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
@@ -164,7 +163,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 36;{
+				case 36;{//AND
 					//when ever adding two different length varaibles cast immdiate or other to make it 32_bits 
 					//also create the signed varibles before in the global varibles to cast later on.
 					//int16_t z;
@@ -173,7 +172,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 37;{
+				case 37;{//OR
 					RegFile[destination_register]= rsValue | rtValue;
 					printf("%d\n",RegFile[destination_register]);
 					break;
@@ -227,6 +226,8 @@ int main(int argc, char * argv[]) {
 					printf("5d\n", RegFile[destination_register]);
 					break;
 				}
+				//SLA
+				//SRL
 				case 16;{//MFHI
 					RegFile[destination_register]=RegFile[32];
 					printf("%d\n",RegFile[destination_register]);
@@ -300,14 +301,59 @@ int main(int argc, char * argv[]) {
 				}
 
 			}else if(opcode==8){//ADDI
-			int32_t cas_immediate =(int32_t)immediate  ; 
+			int32_t cas_immediate =(int32_t)immediate ; 
 			RegFile[target_register]= rsValue + cas_immediate;
 			printf("%d\n",RegFile[target_register]);
-
-			}else if(opcode==9){
+			}
+			else if(opcode==9){//ADDUI
 			unsigned_rsValue =(uint32_t)rsValue;
-
+			int32_t cas_immediate =(int32_t)immediate; 
+			RegFile[target_register]= rsValue + cas_immediate;
+			printf("%d\n",RegFile[target_register]);
 			}		
+			else if (opcode==10){//SLTI
+				int32_t cas_immediate =(int32_t)immediate ; 
+				if(rsValue<cas_immediate){
+						RegFile[destination_register]= true;
+						printf("%d\n",RegFile[destination_register]);
+					}
+					else{
+						RegFile[destination_register]= false;
+						printf("%d\n",RegFile[destination_register]);
+					}
+					break;
+			}
+			else if (opcode==11){//SLTIU
+				uint32_t cas_immediate =(uint32_t)unsinged_immediate; 
+				if(rsValue<cas_immediate){
+						RegFile[destination_register]= true;
+						printf("%d\n",RegFile[destination_register]);
+					}
+					else{
+						RegFile[destination_register]= false;
+						printf("%d\n",RegFile[destination_register]);
+					}
+					break;
+					
+			}else if (opcode == 12){//ANDI
+			int32_t cas_immediate =(int32_t)immediate;
+			RegFile[target_register]= rsValue & cas_immediate;
+			printf("%d\n",RegFile[target_register]); 
+			}
+			else if(opcode==13){//ORI
+			int32_t cas_immediate =(int32_t)immediate;
+			RegFile[target_register]= rsValue | cas_immediate;
+			printf("%d\n",RegFile[target_register]); 
+			}
+			else if(opcode==14){//XORI
+			int32_t cas_immediate =(int32_t)immediate;
+			RegFile[target_register]= rsValue ^ cas_immediate;
+			printf("%d\n",RegFile[target_register]); 
+			}
+			else if (opcode==15){//LUI
+			int32_t cas_immediate =(int32_t)immediate;
+			RegFile[target_register]=  cas_immediate <<16;
+			}
 
 		}
 
