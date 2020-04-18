@@ -10,7 +10,6 @@
 int main(int argc, char * argv[]) {
 	//hi there this is a  comment
 	//MAKE A CHANGE
-	printf("omar/n")
 	
 	/*
 	 * This variable will store the maximum
@@ -101,17 +100,15 @@ int main(int argc, char * argv[]) {
 	int8_t byte;
 	uint8_t ubyte;
 	int8_t bflag=0;	
-	int8_t Dflag=0;
 	uint32_t DelayCounter;
 	
 
 	int i;
 	for(i = 0; i < MaxInstructions; i++) {
 		//FETCH THE INSTRUCTION AT 'ProgramCounter'	
-		int c_LWL =0; // A counter for LWL	
+		int count =0; // A counter for LWL	
 		if(bflag==1){
 			ProgramCounter=DelayCounter;
-			Dflag=1;
 			bflag=0;
 
 		}
@@ -125,22 +122,22 @@ int main(int argc, char * argv[]) {
 		/********************************/
         
 	    printf("currentInstruction: %08x\n", CurrentInstruction);
-		opcode = (CurrentInsturction & 0xFC000000) >>26;
+		opcode = (CurrentInstruction & 0xFC000000) >>26;
 
 	   if(opcode == 0){
-		source_register      =(CurrentInsturction & 0x03E00000) >> 21; 
-		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
-		destination_register =(CurrentInsturction & 0x0000F800) >> 11;
-		shift_ammount 		 =(CurrentInsturction & 0x000007C0) >> 6;
-		function_bits 		 =(CurrentInsturction & 0x0000003F);
+		source_register      =(CurrentInstruction & 0x03E00000) >> 21; 
+		target_register      =(CurrentInstruction & 0x001F0000) >> 16;
+		destination_register =(CurrentInstruction & 0x0000F800) >> 11;
+		shift_ammount 		 =(CurrentInstruction & 0x000007C0) >> 6;
+		function_bits 		 =(CurrentInstruction & 0x0000003F);
         rsValue              =RegFile[source_register];
         rtValue              =RegFile[target_register];
 		}else{
-		source_register      =(CurrentInsturction & 0x03E00000) >> 21;
-		target_register      =(CurrentInsturction & 0x001F0000) >> 16;
-	    immediate            =(CurrentInsturction & 0x0000FFFF);
-	    unsinged_immediate   =(CurrentInsturction & 0x0000FFFF);//unsigned immidiate 
-		address              =(CurrentInsturction & 0x03FFFFFF);
+		source_register      =(CurrentInstruction & 0x03E00000) >> 21;
+		target_register      =(CurrentInstruction & 0x001F0000) >> 16;
+	    immediate            =(CurrentInstruction & 0x0000FFFF);
+	    unsinged_immediate   =(CurrentInstruction & 0x0000FFFF);//unsigned immidiate 
+		address              =(CurrentInstruction & 0x03FFFFFF);
 		rsValue              =RegFile[source_register];
         rtValue              =RegFile[target_register];
 			}
@@ -161,7 +158,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 33;{//addu
+				case 33:{//addu
 					if(destination_register==0){
 						break;
 					}
@@ -171,7 +168,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 34;{//SUB
+				case 34:{//SUB
 					if(destination_register==0){
 						break;
 					}
@@ -179,7 +176,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 35;{//subu
+				case 35:{//subu
 					if(destination_register==0){
 						break;
 					}
@@ -189,7 +186,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 36;{//AND
+				case 36:{//AND
 					if(destination_register==0){
 						break;
 					}
@@ -197,7 +194,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 37;{//OR
+				case 37:{//OR
 					if(destination_register==0){
 						break;
 					}
@@ -205,7 +202,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 38;{//XOR
+				case 38:{//XOR
 					if(destination_register==0){
 						break;
 					}
@@ -213,14 +210,15 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 39;{//NOR
+				case 39:{//NOR
 					if(destination_register==0){
 						break;
 					}
 					RegFile[destination_register]= !(rsValue | rtValue);
 					printf("%d\n",RegFile[destination_register]);
 					break;
-				case 42;{//SLT
+				}
+				case 42:{//SLT
 					if(destination_register==0){
 						break;
 					}
@@ -233,21 +231,24 @@ int main(int argc, char * argv[]) {
 						printf("%d\n",RegFile[destination_register]);
 					}
 					break;
-				case 43;{//SLTU
+				}
+				case 43:{//SLTU
 					if(destination_register==0){
 						break;
 					}
 					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
 					unsigned_rsValue =(uint32_t)rsValue;
-					if(unsigned_rsValue<unsigned_rtValue)
+					if(unsigned_rsValue<unsigned_rtValue){
 						RegFile[destination_register]= true;
 						printf("%d\n",RegFile[destination_register]);
-					else
+					}
+					else{
 						RegFile[destination_register]= false;
 						printf("%d\n",RegFile[destination_register]);
+					}
 					break;
 				}
-				case 0;{//SLL
+				case 0:{//SLL
 					if(destination_register==0){
 						break;
 					}
@@ -256,7 +257,7 @@ int main(int argc, char * argv[]) {
 					break;
 					
 				}
-				case 2;{//SRL
+				case 2:{//SRL
 					if(destination_register==0){
 						break;
 					}
@@ -264,19 +265,16 @@ int main(int argc, char * argv[]) {
 					RegFile[destination_register]= unsigned_rtValue >> shift_ammount;
 					printf("5d\n", RegFile[destination_register]);
 					break;
-				}//q1) Do we do this operation unsigned or signed since we might change the MSB?
-				//q2) Do we take the bit represnation of the rt register and shift it by shift_amount bits
-				//SLA
-				//SRL
-				case 3;{//SRA
+				}
+				case 3:{//SRA
 					if(destination_register==0){
 						break;
 					}
-					RegFile[destination_register]=(signed)rtValue>>shift_amount;
+					RegFile[destination_register]=(signed)rtValue>>shift_ammount;
 					printf("%x\n",RegFile[destination_register]);
 					break;
 				}
-				case 4;{//SLLV
+				case 4:{//SLLV
 					if(destination_register==0){
 						break;
 					}
@@ -284,7 +282,7 @@ int main(int argc, char * argv[]) {
 					printf("%x\n",RegFile[destination_register]);
 					break;
 				}
-				case 6;{//SRLV
+				case 6:{//SRLV
 					if(destination_register==0){
 						break;
 					}
@@ -292,7 +290,7 @@ int main(int argc, char * argv[]) {
 					printf("%x\n",RegFile[destination_register]);
 					break;
 				}
-				case 7;{//SRAV
+				case 7:{//SRAV
 					if(destination_register==0){
 						break;
 					}
@@ -300,27 +298,31 @@ int main(int argc, char * argv[]) {
 					printf("%x\n",RegFile[destination_register]);
 					break;
 				}
-				case 16;{//MFHI
+				case 12:{
+					printf("SYSCALL inst\n");
+					SyscallExe(RegFile[2]);
+				}
+				case 16:{//MFHI
 					RegFile[destination_register]=RegFile[32];
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 17;{//MTHI
+				case 17:{//MTHI
 					RegFile[32]=rsValue;
 					printf("%d\n",RegFile[32]);
 					break;
 				}
-				case 18;{//MFLO
+				case 18:{//MFLO
 					RegFile[destination_register]=RegFile[33];
 					printf("%d\n",RegFile[destination_register]);
 					break;
 				}
-				case 19;{//MTLO
+				case 19:{//MTLO
 					RegFile[33]=rsValue;
 					printf("%d\n",RegFile[33]);
 					break;
 				}
-				case 24;{//MULT
+				case 24:{//MULT
 					int64_t result = rsValue*rtValue;
 					RegFile[32]= result >>32;
 					RegFile[33]=(int32_t)result;
@@ -328,7 +330,7 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[33]);
 					break;
 				}
-				case 25;{//MULTU
+				case 25:{//MULTU
 					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
 					unsigned_rsValue =(uint32_t)rsValue;
 					int64_t result = unsigned_rsValue*unsigned_rtValue;
@@ -338,14 +340,14 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[33]);
 					break;				
 				}
-				case 26;{//DIV
-					RegFile[32]=rsValue%rtValue
-					RegFile[33]=rsValue/rtValue
+				case 26:{//DIV
+					RegFile[32]=rsValue%rtValue;
+					RegFile[33]=rsValue/rtValue;
 					printf("%d\n",RegFile[32]);
 					printf("%d\n",RegFile[33]);
 					break;
 				}
-				case 27;{//DIVU
+				case 27:{//DIVU
 					unsigned_rtValue =(uint32_t)rtValue;//casting the rs and rt values to unsiged 
 					unsigned_rsValue =(uint32_t)rsValue;
 					RegFile[32]=unsigned_rsValue%unsigned_rtValue;
@@ -354,13 +356,13 @@ int main(int argc, char * argv[]) {
 					printf("%d\n",RegFile[33]);
 					break;
 				}
-				case 8;{
+				case 8:{
 					//JR
 					bflag =1;
 					DelayCounter = rsValue;//DelayCounter is the PC that the Jumb reigster goes to.
 					break;
 				}
-				case 9;{
+				case 9:{
 					//JALR
 					bflag =1;
 					DelayCounter = RegFile[source_register];
@@ -438,12 +440,12 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}
 
 				}
-				case 1;{//BGEZ
+				case 1:{//BGEZ
 				if((signed)rsValue>=0){
 						
 						int32_t cas_immediate= immediate<<2;
@@ -451,11 +453,11 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}		
 				}
-				case 16;{//BLTZAL
+				case 16:{//BLTZAL
 					if((signed)rsValue<0){
 						
 						int32_t cas_immediate= immediate<<2;//casting
@@ -463,11 +465,11 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}
 				}
-				case 17;{//BGEZAL
+				case 17:{//BGEZAL
 					if((signed)rsValue>=0){
 						
 						int32_t cas_immediate= immediate<<2;//casting
@@ -475,11 +477,12 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}
 				}
-
+			}	
+		}	
 		else if (opcode == 4){//BEQ
 			if((signed)rsValue==(signed)rtValue){
 						
@@ -488,10 +491,11 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}	
-		}else if (opcode == 5){//BNE
+		}
+		else if (opcode == 5){//BNE
 			if((signed)rsValue!=(signed)rtValue){
 						
 						int32_t cas_immediate= immediate<<2;
@@ -499,10 +503,11 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}	
-		}else if (opcode == 6){//BLEZ
+		}
+		else if (opcode == 6){//BLEZ
 			if((signed)rsValue<=0){
 						
 						int32_t cas_immediate= immediate<<2;
@@ -510,27 +515,30 @@ int main(int argc, char * argv[]) {
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}	
-		}else if (opcode == 7){//BGTZ
+		}
+		else if (opcode == 7){//BGTZ
 			if((signed)rsValue>0){
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
 						break;
 					}else{
-						bflag=0
+						bflag=0;
 						break;
 					}	
-		}else if(opcode==2){//J 
+		}
+		else if(opcode==2){//J 
 			bflag =1;
 			uint32_t temp=(ProgramCounter)& 0xF0000000;
 			int32_t cas_address= address<<2;
 			DelayCounter= temp+(cas_address);
 			break;
 			printf("x\n", DelayCounter);
-		}else if(opcode==3){//JAL
+		}
+		else if(opcode==3){//JAL
 			bflag =1;
 			uint32_t temp=(ProgramCounter)& 0xF0000000;
 			RegFile[31] = ProgramCounter+4;
@@ -538,7 +546,8 @@ int main(int argc, char * argv[]) {
 			DelayCounter= temp+(cas_address);
 			break;
 
-		}else if(opcode==32){//LB
+		}
+		else if(opcode==32){//LB
 			address= RegFile[source_register] + immediate;
 			byte= readbyte(address, false);
 			RegFile[target_register]=byte;
@@ -556,26 +565,27 @@ int main(int argc, char * argv[]) {
 		}
 		else if(opcode==34){//LWL
 			address = RegFile[source_register] + immediate;
-			c_LWL = 4 - (address%4);
+			count = 4 - (address%4);
 			if (count==4){
 				word= readWord(address, false);
 				RegFile[target_register]=byte;
 			}
 			else{
-			for(i=0; i<count; i++){
-				word= word | readbyte((address+i), false);
+			int k;	
+			for(k=0; k<count; k++){
+				word= word | readbyte((address+k), false);
 				word= word << 8;
 			}
-			word = word << (3-j)*8
+			word = word << (3-k)*8;
 			RegFile[target_register]= (RegFile[target_register] & word) | word; 
 			}
 			word=0;
-			break
+			break;
 		}
 		else if(opcode==35){//LW
 			address= RegFile[source_register] + immediate;
 			word= readword(address, false);
-			RegFile[target_register]=dword;
+			RegFile[target_register]=word;
 			word=0;
 			break;
 		}
@@ -597,18 +607,74 @@ int main(int argc, char * argv[]) {
 		}
 		else if(opcode==38){//LWR
 			address = RegFile[source_register] + immediate;
-			c_LWL = address%4;
+			count = address%4; 
 			if (count=!0){
-			for(i=4; i<count; i--){
-				data= data | readbyte((address+i), false);
+			for(int k=4; k>count; k--){
+				data= data | readbyte((address+k), false);
 				data= data << 8;
 			}
 			data = data>>8;
 			RegFile[target_register]= (RegFile[target_register] & data) | data; 
 			}
-			break
+			break;
 		}
+		else if(opcode==40){//SB
+			address= RegFile[source_register] + immediate;
+			ubyte= RegFile[target_register];
+			writeByte(address,ubyte,false);
+			ubyte=0;
+			break;
+		}
+		else if(opcode==41){//SH
+			address= RegFile[source_register] + immediate;
+			ubyte= RegFile[target_register];
+			writeByte(address+1,ubyte,false);
+			ubyte = RegFile[target_register]>>8;
+			writeByte(address,ubyte,false);
+			ubyte=0;
+		}
+		else if(opcode==42){//SWL
+			address= RegFile[source_register] + immediate;
+			count=4- (address%4);
+			uword=RegFile[target_register];
+			if(count!=0){
+			for(int j=0;j<count;j++){
+				ubyte = uword;
+				writeByte((address+j),ubyte,false);
+				uword = uword >>8;
+			}
+		    }
+		    writeByte(address,uword,false);
+
+			uword =0;
+			break;
+		}
+		else if(opcode == 43){//SW
+			address= RegFile[source_register] + immediate;
+			uword=RegFile[target_register];
+			writeByte(address,uword,false);
+			uword=0;
+			break;
+		}
+		else if(opcode==46){//SWR
+			address= RegFile[source_register] + immediate;
+			count=address%4;
+			uword=RegFile[target_register];
+			if(count!=0){
+				for(int k=4; k>count; k--){
+					ubyte=uword;
+					writeByte((address+k),ubyte,false);
+					uword=uword<<8;
+				}
+			writeByte(address,uword,false);
+
+			uword =0;
+			}
+		}
+		ProgramCounter+=4;
+		RegFile[0]=0;
 	}   
+
 
 	//Close file pointers & free allocated Memory
 	closeFDT();
@@ -616,3 +682,4 @@ int main(int argc, char * argv[]) {
 
 	return 0;
 	//testing 
+}
