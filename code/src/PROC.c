@@ -424,7 +424,7 @@ int main(int argc, char * argv[]) {
 					case 0:{//BLTZ
 
 					if((signed)rsValue<0){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -437,7 +437,7 @@ int main(int argc, char * argv[]) {
 				}
 				case 1;{//BGEZ
 				if((signed)rsValue>=0){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -449,7 +449,7 @@ int main(int argc, char * argv[]) {
 				}
 				case 16;{//BLTZAL
 					if((signed)rsValue<0){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;//casting
 						RegFile[31]= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -461,7 +461,7 @@ int main(int argc, char * argv[]) {
 				}
 				case 17;{//BGEZAL
 					if((signed)rsValue>=0){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;//casting
 						RegFile[31]= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -475,7 +475,7 @@ int main(int argc, char * argv[]) {
 
 		}else if (opcode == 4){//BEQ
 			if((signed)rsValue==(signed)rtValue){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -486,7 +486,7 @@ int main(int argc, char * argv[]) {
 					}	
 		}else if (opcode == 5){//BNE
 			if((signed)rsValue!=(signed)rtValue){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -497,7 +497,7 @@ int main(int argc, char * argv[]) {
 					}	
 		}else if (opcode == 6){//BLEZ
 			if((signed)rsValue<=0){
-						CurrentInsturction= ProgramCounter+4;
+						
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -508,7 +508,6 @@ int main(int argc, char * argv[]) {
 					}	
 		}else if (opcode == 7){//BGTZ
 			if((signed)rsValue>0){
-						CurrentInsturction= ProgramCounter+4;
 						int32_t cas_immediate= immediate<<2;
 						DelayCounter= ProgramCounter+(cas_immediate+4);
 						bflag=1;
@@ -519,18 +518,17 @@ int main(int argc, char * argv[]) {
 					}	
 		}else if(opcode==2){//J 
 			bflag =1;
-			CurrentInsturction= ProgramCounter+4;
-			int32_t cas_immediate= immediate<<2;
-			DelayCounter= ProgramCounter+(cas_immediate+4);
+			uint32_t temp=(ProgramCounter)& 0xF0000000;
+			int32_t cas_address= address<<2;
+			DelayCounter= temp+(cas_address);
 			break;
 			printf("x\n", DelayCounter);
 		}else if(opcode==3){//JAL
 			bflag =1;
-			address = CurrentInsturction & 0x03FFFFFF;
-			CurrentInsturction= ProgramCounter+4;
-			RegFile[31] = ProgramCounter +8;
-			int32_t cas_immediate= immediate<<2;
-			DelayCounter= ProgramCounter+(cas_immediate+4);
+			uint32_t temp=(ProgramCounter)& 0xF0000000;
+			RegFile[31] = ProgramCounter+4;
+			int32_t cas_address= address<<2;
+			DelayCounter= temp+(cas_address);
 			break;
 
 		}
