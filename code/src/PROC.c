@@ -549,16 +549,16 @@ int main(int argc, char * argv[]) {
 		}
 		else if(opcode==32){//LB
 			address= RegFile[source_register] + immediate;
-			byte= readbyte(address, false);
+			byte= readByte(address, false);
 			RegFile[target_register]=byte;
 			byte=0;
 			break;
 		}
 		else if(opcode==33){//LH
 			address= RegFile[source_register] + immediate;
-			byte= readbyte(address, false);
+			byte= readByte(address, false);
 			RegFile[target_register]=byte << 8;
-			byte= readbyte((address+1), false);
+			byte= readByte((address+1), false);
 			RegFile[target_register]= RegFile[target_register] | byte; 
 			byte=0;
 			break;
@@ -573,7 +573,7 @@ int main(int argc, char * argv[]) {
 			else{
 			int k;	
 			for(k=0; k<count; k++){
-				word= word | readbyte((address+k), false);
+				word= word | readByte((address+k), false);
 				word= word << 8;
 			}
 			word = word << (3-k)*8;
@@ -584,23 +584,23 @@ int main(int argc, char * argv[]) {
 		}
 		else if(opcode==35){//LW
 			address= RegFile[source_register] + immediate;
-			word= readword(address, false);
+			word= readWord(address, false);
 			RegFile[target_register]=word;
 			word=0;
 			break;
 		}
 		else if(opcode==36){//LBU
 			address= RegFile[source_register] + immediate;
-			ubyte= readbyte(address, false);
+			ubyte= readByte(address, false);
 			RegFile[target_register]=ubyte;
 			ubyte=0;
 			break;
 		}
 		else if(opcode==37){//LHU
 			address= RegFile[source_register] + immediate;
-			ubyte= readbyte(address, false);
+			ubyte= readByte(address, false);
 			RegFile[target_register]=ubyte << 8;
-			ubyte= readbyte((address+1), false);
+			ubyte= readByte((address+1), false);
 			RegFile[target_register]= RegFile[target_register] | ubyte; 
 			ubyte=0;
 			break;
@@ -610,7 +610,7 @@ int main(int argc, char * argv[]) {
 			count = address%4; 
 			if (count=!0){
 			for(int k=4; k>count; k--){
-				data= data | readbyte((address+k), false);
+				data= data | readByte((address+k), false);
 				data= data << 8;
 			}
 			data = data>>8;
