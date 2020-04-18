@@ -94,6 +94,12 @@ int main(int argc, char * argv[]) {
 	uint32_t unsigned_rsValue;
 	int32_t rtValue;
 	uint32_t unsigned_rtValue;
+	int32_t word;
+	uint32_t uword;
+	int32_t data;
+	uint32_t udata;
+	int8_t byte;
+	uint8_t ubyte;
 	int8_t bflag=0;	
 	int8_t Dflag=0;
 	uint32_t DelayCounter;
@@ -101,7 +107,8 @@ int main(int argc, char * argv[]) {
 
 	int i;
 	for(i = 0; i < MaxInstructions; i++) {
-		//FETCH THE INSTRUCTION AT 'ProgramCounter'		
+		//FETCH THE INSTRUCTION AT 'ProgramCounter'	
+		int c_LWL =0; // A counter for LWL	
 		if(bflag==1){
 			ProgramCounter=DelayCounter;
 			Dflag=1;
@@ -363,8 +370,9 @@ int main(int argc, char * argv[]) {
 					
 					break;
 				}
-
-			}else if(opcode==8){//ADDI
+			}
+		}
+			else if(opcode==8){//ADDI
 			int32_t cas_immediate =(int32_t)immediate ; 
 			RegFile[target_register]= rsValue + cas_immediate;
 			printf("%d\n",RegFile[target_register]);
@@ -471,9 +479,8 @@ int main(int argc, char * argv[]) {
 						break;
 					}
 				}
-			}
 
-		}else if (opcode == 4){//BEQ
+		else if (opcode == 4){//BEQ
 			if((signed)rsValue==(signed)rtValue){
 						
 						int32_t cas_immediate= immediate<<2;
@@ -531,8 +538,76 @@ int main(int argc, char * argv[]) {
 			DelayCounter= temp+(cas_address);
 			break;
 
+		}else if(opcode==32){//LB
+			address= RegFile[source_register] + immediate;
+			byte= readbyte(address, false);
+			RegFile[target_register]=byte;
+			byte=0;
+			break;
 		}
-
+		else if(opcode==33){//LH
+			address= RegFile[source_register] + immediate;
+			byte= readbyte(address, false);
+			RegFile[target_register]=byte << 8;
+			byte= readbyte((address+1), false);
+			RegFile[target_register]= RegFile[target_register] | byte; 
+			byte=0;
+			break;
+		}
+		else if(opcode==34){//LWL
+			address = RegFile[source_register] + immediate;
+			c_LWL = 4 - (address%4);
+			if (count==4){
+				word= readWord(address, false);
+				RegFile[target_register]=byte;
+			}
+			else{
+			for(i=0; i<count; i++){
+				word= word | readbyte((address+i), false);
+				word= word << 8;
+			}
+			word = word << (3-j)*8
+			RegFile[target_register]= (RegFile[target_register] & word) | word; 
+			}
+			word=0;
+			break
+		}
+		else if(opcode==35){//LW
+			address= RegFile[source_register] + immediate;
+			word= readword(address, false);
+			RegFile[target_register]=dword;
+			word=0;
+			break;
+		}
+		else if(opcode==36){//LBU
+			address= RegFile[source_register] + immediate;
+			ubyte= readbyte(address, false);
+			RegFile[target_register]=ubyte;
+			ubyte=0;
+			break;
+		}
+		else if(opcode==37){//LHU
+			address= RegFile[source_register] + immediate;
+			ubyte= readbyte(address, false);
+			RegFile[target_register]=ubyte << 8;
+			ubyte= readbyte((address+1), false);
+			RegFile[target_register]= RegFile[target_register] | ubyte; 
+			ubyte=0;
+			break;
+		}
+		else if(opcode==38){//LWR
+			address = RegFile[source_register] + immediate;
+			c_LWL = address%4;
+			if (count=!0){
+			for(i=4; i<count; i--){
+				data= data | readbyte((address+i), false);
+				data= data << 8;
+			}
+			data = data>>8;
+			RegFile[target_register]= (RegFile[target_register] & data) | data; 
+			}
+			break
+		}
 	}   
 
 	//Close file pointers & free allocated Memory
